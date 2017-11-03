@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.eirikstrom.phys.DoublePoint;
 import com.eirikstrom.phys.game.Ball;
 import com.eirikstrom.phys.game.Game;
 
@@ -36,9 +37,8 @@ public class GUI {
 
         pixmap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.Alpha);
 
-        for(Ball b : game.getBalls()) {
-            drawBall(b.getCoords(), b.getSize());
-        }
+        drawWorld();
+        drawBalls();
 
         Texture texture = new Texture(pixmap);
 
@@ -47,14 +47,28 @@ public class GUI {
         batch.end();
     }
 
-    private void drawBall(Point2D.Double p, int radius) {
+    private void drawWorld() {
+        Point from = getCoords(new DoublePoint(0, game.world.getFloorHeight()));
+        Point to = getCoords(new DoublePoint(1, game.world.getFloorHeight()));
+
+        pixmap.setColor(Color.GRAY);
+        pixmap.drawLine(from.x, from.y, to.x, to.y);
+    }
+
+    private void drawBalls() {
+        for(Ball b : game.getBalls()) {
+            drawBall(b.getCoords(), b.getSize());
+        }
+    }
+
+    private void drawBall(DoublePoint p, double radius) {
         Point translatedP = getCoords(p);
 
         pixmap.setColor(Color.BLACK);
-        pixmap.fillCircle(translatedP.x, translatedP.y, radius);
+        pixmap.fillCircle(translatedP.x, translatedP.y, (int)(radius*width));
     }
 
-    private Point getCoords(Point2D.Double fp) {
-        return new Point((int) (fp.x * width), (int) (fp.y * height));
+    private Point getCoords(DoublePoint fp) {
+        return new Point((int) (fp.x * width), (int) ((1-fp.y) * height));
     }
 }

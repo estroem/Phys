@@ -1,5 +1,7 @@
 package com.eirikstrom.phys.game;
 
+import com.eirikstrom.phys.DoublePoint;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,16 +10,21 @@ import java.util.List;
  * Created by Eirik on 03.11.2017.
  */
 public class Game {
+    public World world;
+
     private List<Ball> balls;
 
     public Game() {
+        world = new World();
+
         balls = new ArrayList<Ball>();
-        balls.add(new Ball(new Point2D.Double(0.5, 0.5), 10));
+        balls.add(new Ball(this, new DoublePoint(0.5, 0.5), new DoublePoint(0.005, 0), 0.01));
     }
 
     public void update() {
         for(Ball b : balls) {
-            b.move(new Point2D.Double(0.01, 0.01));
+            b.accelerate(new DoublePoint(0, -0.0003));
+            b.update();
         }
     }
 
