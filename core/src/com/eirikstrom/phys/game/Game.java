@@ -12,15 +12,15 @@ import java.util.List;
 public class Game {
     public static double GRAVITY = -0.0003;
 
-    public World world;
+    public Floor floor;
 
     private List<Ball> balls;
 
     public Game() {
-        world = new World(0.2);
+        floor = new Floor(0.2);
 
         balls = new ArrayList<Ball>();
-        balls.add(new Ball(this, new DoublePoint(0.5, 0.5), new DoublePoint(0.005, 0), 0.01));
+        balls.add(new Ball(this, new DoublePoint(0.1, 0.4), new DoublePoint(0.005, 0), 0.01));
     }
 
     public void update() {
@@ -32,5 +32,9 @@ public class Game {
 
     public List<Ball> getBalls() {
         return balls;
+    }
+
+    public Floor getFloor() {
+        return floor;
     }
 }

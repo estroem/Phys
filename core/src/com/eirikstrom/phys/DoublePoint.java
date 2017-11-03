@@ -21,4 +21,8 @@ public class DoublePoint {
         x += d.x;
         y += d.y;
     }
+
+    public double distance(DoublePoint p) {
+        return Math.sqrt(Math.pow(Math.abs(x - p.x), 2) + Math.pow(Math.abs(y - p.y), 2));
+    }
 }

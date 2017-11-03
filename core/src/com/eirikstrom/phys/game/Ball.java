@@ -7,10 +7,10 @@ import java.awt.geom.Point2D;
 /**
  * Created by Eirik on 03.11.2017.
  */
-public class Ball {
+public class Ball extends Shape {
     private DoublePoint pos;
-    private double size;
     private DoublePoint speed;
+    private double size;
 
     private Game game;
 
@@ -30,16 +30,11 @@ public class Ball {
     }
 
     public void move(DoublePoint dist) {
-        DoublePoint newPos = new DoublePoint(pos);
-        newPos.translate(dist);
-        newPos.translate(new DoublePoint(0, -size));
+        pos.translate(dist);
 
-        if(!game.world.contains(newPos)) {
-            newPos.translate(new DoublePoint(0, size));
-            pos = newPos;
-        } else {
-            newPos.translate(new DoublePoint(0, size));
-            pos.x = newPos.x;
+        if(checkCollision(game.getFloor())) {
+            pos.y = game.getFloor().getHeight() + size;
+            speed.y = -speed.y;
         }
     }
 
@@ -49,5 +44,20 @@ public class Ball {
 
     public double getSize() {
         return size;
+    }
+
+    public boolean checkCollision(Shape other) {
+        if(other == this)
+            return false;
+
+        if(other instanceof Ball) {
+            return pos.distance(((Ball) other).pos) < (size + ((Ball) other).size);
+        }
+
+        else if(other instanceof Floor) {
+            return pos.y - size <= ((Floor) other).getHeight();
+        }
+
+        return false;
     }
 }
