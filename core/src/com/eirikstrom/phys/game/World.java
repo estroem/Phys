@@ -6,7 +6,11 @@ import com.eirikstrom.phys.DoublePoint;
  * Created by Eirik on 03.11.2017.
  */
 public class World {
-    double floorHeight = 0.2;
+    double floorHeight;
+
+    public World(double floorHeight) {
+        this.floorHeight = floorHeight;
+    }
 
     public boolean contains(DoublePoint p) {
         return p.y <= floorHeight;
